@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2020-07-31T21:16:11Z</date>
+    <groups>
+        <group>
+            <name>Templates/Applications</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template SRM - REST</template>
+            <name>Template SRM - REST</name>
+            <groups>
+                <group>
+                    <name>Templates/Applications</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>SRM Events</name>
+                </application>
+            </applications>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>SRM - events Discovers</name>
+                    <type>EXTERNAL</type>
+                    <key>request_srm.py[&quot;--target={HOST.DNS}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=discoverEvents&quot;,&quot;--out=console&quot;]</key>
+                    <delay>10m</delay>
+                    <filter>
+                        <conditions>
+                            <condition>
+                                <macro>{#EVENT.ACTIVE}</macro>
+                                <value>1</value>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
+                    </filter>
+                    <lifetime>0</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>SRM - Events - {#EVENT.DEFINITION} - infos</name>
+                            <type>EXTERNAL</type>
+                            <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            <delay>5m</delay>
+                            <history>3600</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - active</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.active[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.active</params>
+                                    <error_handler>CUSTOM_VALUE</error_handler>
+                                    <error_handler_params>0</error_handler_params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - category</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.category[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.category</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - eventdisplayname</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.eventdisplayname[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.eventdisplayname</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - eventsource</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.eventsource[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.eventSource</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - eventstate</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.eventstate[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.eventstate</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - eventtype</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.eventtype[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.eventtype</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - partdisplayname</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.partdisplayname[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.partdisplayname</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - parttypedisplayname</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.parttypedisplayname[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.parttypedisplayname</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - part</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.part[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.part</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - severityAsString</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.severityasstring[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.severityAsString</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>SRM - Event {#EVENT.DEFINITION} - severity</name>
+                            <type>DEPENDENT</type>
+                            <key>srm.event.severity[{#EVENT.ID}]</key>
+                            <delay>0</delay>
+                            <history>1d</history>
+                            <applications>
+                                <application>
+                                    <name>SRM Events</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.severity</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>request_srm.py[&quot;--target={HOST.DNS}&quot;, &quot;--port={$SRM.PORT}&quot;,&quot;--user={$SRM.USERNAME}&quot;,&quot;--password={$SRM.PASSWORD}&quot;,&quot;--request=EventsInfo&quot;,&quot;--entity={#EVENT.ID}&quot;,--out=console&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <expression>{Template SRM - REST:srm.event.eventstate[{#EVENT.ID}].str(ACTIVE)}=1 and&#13;
+{Template SRM - REST:srm.event.severityasstring[{#EVENT.ID}].str(CRITICAL)}=1</expression>
+                            <name>SRM - Events - {#EVENT.DEFINITION} - Critical</name>
+                            <url>{$SRM.SCHEME}://{HOST.DNS}:{$SRM.PORT}/</url>
+                            <priority>AVERAGE</priority>
+                            <description>{#EVENT.DEFINITION}&#13;
+Message: &#13;
+{#EVENT.FULLMSG}&#13;
+&#13;
+Name: {#EVENT.DISPLAYNAME}&#13;
+Start: {#EVENT.OPENEDAT}&#13;
+Etat  :{#EVENT.EVENTSTATE}&#13;
+Category:  {#EVENT.CATEGORY}&#13;
+Source: {#EVENT.EVENTSOURCE}&#13;
+Device: {#EVENT.DEVICE}&#13;
+Type: {#EVENT.DEVTYPE}</description>
+                            <tags>
+                                <tag>
+                                    <tag>app</tag>
+                                    <value>srm</value>
+                                </tag>
+                            </tags>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <expression>{Template SRM - REST:srm.event.eventstate[{#EVENT.ID}].str(ACTIVE)}=1 and&#13;
+{Template SRM - REST:srm.event.severityasstring[{#EVENT.ID}].str(INFORMTIONAL)}=1</expression>
+                            <name>SRM - Events - {#EVENT.DEFINITION} - Information</name>
+                            <url>{$SRM.SCHEME}://{HOST.DNS}:{$SRM.PORT}/</url>
+                            <priority>INFO</priority>
+                            <description>{#EVENT.DEFINITION}&#13;
+Message: &#13;
+{#EVENT.FULLMSG}&#13;
+&#13;
+Name: {#EVENT.DISPLAYNAME}&#13;
+Start: {#EVENT.OPENEDAT}&#13;
+Etat  :{#EVENT.EVENTSTATE}&#13;
+Category:  {#EVENT.CATEGORY}&#13;
+Source: {#EVENT.EVENTSOURCE}&#13;
+Device: {#EVENT.DEVICE}&#13;
+Type: {#EVENT.DEVTYPE}</description>
+                            <tags>
+                                <tag>
+                                    <tag>app</tag>
+                                    <value>srm</value>
+                                </tag>
+                            </tags>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <expression>{Template SRM - REST:srm.event.eventstate[{#EVENT.ID}].str(ACTIVE)}=1 and&#13;
+{Template SRM - REST:srm.event.severityasstring[{#EVENT.ID}].str(MAJOR)}=1</expression>
+                            <name>SRM - Events - {#EVENT.DEFINITION} - MAJOR</name>
+                            <url>{$SRM.SCHEME}://{HOST.DNS}:{$SRM.PORT}/</url>
+                            <priority>HIGH</priority>
+                            <description>{#EVENT.DEFINITION}&#13;
+Message: &#13;
+{#EVENT.FULLMSG}&#13;
+&#13;
+Name: {#EVENT.DISPLAYNAME}&#13;
+Start: {#EVENT.OPENEDAT}&#13;
+Etat  :{#EVENT.EVENTSTATE}&#13;
+Category:  {#EVENT.CATEGORY}&#13;
+Source: {#EVENT.EVENTSOURCE}&#13;
+Device: {#EVENT.DEVICE}&#13;
+Type: {#EVENT.DEVTYPE}</description>
+                            <tags>
+                                <tag>
+                                    <tag>app</tag>
+                                    <value>srm</value>
+                                </tag>
+                            </tags>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+                    <lld_macro_paths>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.SEVERITY}</lld_macro>
+                            <path>$.properties.severity</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.ACTIVE}</lld_macro>
+                            <path>$.properties.active</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.DEFINITION}</lld_macro>
+                            <path>$.properties.eventDefinition</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.DEVICE}</lld_macro>
+                            <path>$.properties.device</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.ID}</lld_macro>
+                            <path>$.properties.id</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.FILTER}</lld_macro>
+                            <path>$.properties._filter</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.ISPROBLEMASSTRING}</lld_macro>
+                            <path>$.properties.isproblemAsString</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.DEVTYPE}</lld_macro>
+                            <path>$.properties.devtype</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.EVENTSOURCE}</lld_macro>
+                            <path>$.properties.eventSource</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.OPENEDAT}</lld_macro>
+                            <path>$.properties.openedat</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.EVENTTYPE}</lld_macro>
+                            <path>$.properties.eventtype</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.FULLMSG}</lld_macro>
+                            <path>$.properties.fullmsg</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.PART}</lld_macro>
+                            <path>$.properties.part</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.PARTTYPE}</lld_macro>
+                            <path>$.properties.parttype</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.EVENTNAME}</lld_macro>
+                            <path>$.properties.eventname</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.EVENTSTATE}</lld_macro>
+                            <path>$.properties.eventstate</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.CATEGORY}</lld_macro>
+                            <path>$.properties.category</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#EVENT.DISPLAYNAME}</lld_macro>
+                            <path>$.properties.eventdisplayname</path>
+                        </lld_macro_path>
+                    </lld_macro_paths>
+                </discovery_rule>
+            </discovery_rules>
+            <tags>
+                <tag>
+                    <tag>app</tag>
+                    <value>srm</value>
+                </tag>
+                <tag>
+                    <tag>component</tag>
+                    <value>storage</value>
+                </tag>
+            </tags>
+            <macros>
+                <macro>
+                    <macro>{$SRM.PASSWORD}</macro>
+                </macro>
+                <macro>
+                    <macro>{$SRM.PORT}</macro>
+                    <value>58443</value>
+                </macro>
+                <macro>
+                    <macro>{$SRM.SCHEME}</macro>
+                    <value>https</value>
+                </macro>
+                <macro>
+                    <macro>{$SRM.USERNAME}</macro>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>
